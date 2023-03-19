@@ -2,7 +2,7 @@ import Head from "next/head";
 import { ChakraProvider } from "@chakra-ui/react";
 import NavBar from "../../../components/studentNavbar";
 import Footer from "../../../components/Footer";
-import Card from "../../../components/Card";
+import Card from "../../../components/QuizBankTitle";
 import QuizTable from "../../../components/pagination";
 import { Box } from "@chakra-ui/react";
 import clientPromise from "../../../src/lib/mongodb";
