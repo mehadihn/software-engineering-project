@@ -4,7 +4,9 @@ import ReactPaginate from "react-paginate";
 import { Table, Thead, Tbody, Tr, Th, Td, Button, Center, Flex, HStack} from "@chakra-ui/react";
 import {Quiz} from "../src/models/studentQuizBank";
 
-
+/**
+ * Defining Quiz Data
+ */
 interface Props {
   quizzes: Quiz[];
 }
@@ -81,17 +83,33 @@ const quizzes: Quiz[] = [
   },
   // Add more quizzes as needed
 ];
+
+/**
+ * Defining number of items per page for pagination
+ */
 const ITEMS_PER_PAGE = 3;
 
+/**
+ * Setting current page as user state 0, to define next and previous pages in pagination
+ */
 const QuizTable = ({ quizzes }: Props) => {
   const [currentPage, setCurrentPage] = useState(0);
 
+  /**
+   * Using handlePageClick to navigate between different pages in pagination
+   */
   const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
 
+  /**
+   * Defining an offset for data set with acceptable data for a certain page. calculated by multiplying current page number ny items per page.
+   */
   const offset = currentPage * ITEMS_PER_PAGE;
 
+  /**
+   * mapping quiz data with table columns and adding pagination
+   */
   const pagedQuizzes = quizzes.slice(offset, offset + ITEMS_PER_PAGE);
   return (
     <><Table variant="striped">

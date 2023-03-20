@@ -1,11 +1,11 @@
 /**
- * To create title card for the whole site as a reusable component
+ * To create title card for QuizBank Page
  */
 import { Box,chakra } from "@chakra-ui/react";
 
 /**
- * Creating the title card for the dashboard pages for students ans admins
- * @returns the title of the tables in both dashboard pages
+ * Creating the title card for the quizbank page
+ * @returns the title of quizbank page
  */
 export default function Card() {
   return (
