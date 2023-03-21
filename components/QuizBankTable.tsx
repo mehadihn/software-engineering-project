@@ -1,15 +1,20 @@
 import React from "react";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
-import { Table, Thead, Tbody, Tr, Th, Td, Button, Center, Flex, HStack} from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, Button, Center, Flex, HStack, Box } from "@chakra-ui/react";
 import {Quiz} from "../src/models/studentQuizBank";
-
 /**
- * Defining Quiz Data
+ * to load css styles to the page since there are no default pagination in Chakra UI
  */
+import { Global } from '@emotion/react';
+
 interface Props {
   quizzes: Quiz[];
 }
+
+/**
+ * Adding sample data to the table, these will be replaced by the database data
+ */
 const quizzes: Quiz[] = [
   {
     id: 1,
@@ -80,85 +85,138 @@ const quizzes: Quiz[] = [
     subject: "IQ",
     type: "Short Answer",
     time:"60 min"
-  },
+  }
   // Add more quizzes as needed
 ];
 
 /**
- * Defining number of items per page for pagination
+ * Defining the number of items per a page for pagination. 
  */
-const ITEMS_PER_PAGE = 3;
+const ITEMS_PER_PAGE = 5;
 
 /**
- * Setting current page as user state 0, to define next and previous pages in pagination
+ * to map  data to the table view and to handle pagination
+ * @returns table with provided data and pagination
  */
 const QuizTable = ({ quizzes }: Props) => {
   const [currentPage, setCurrentPage] = useState(0);
 
-  /**
-   * Using handlePageClick to navigate between different pages in pagination
-   */
   const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
-
-  /**
-   * Defining an offset for data set with acceptable data for a certain page. calculated by multiplying current page number ny items per page.
-   */
   const offset = currentPage * ITEMS_PER_PAGE;
 
-  /**
-   * mapping quiz data with table columns and adding pagination
-   */
   const pagedQuizzes = quizzes.slice(offset, offset + ITEMS_PER_PAGE);
+
   return (
-    <><Table variant="striped">
-      <Thead>
-        <Tr>
-          <Th>Quiz Name</Th>
-          <Th>Subject</Th>
-          <Th>Quiz Type</Th>
-          <Th>Time</Th>
-          <Th textAlign={"right"}></Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {pagedQuizzes.map((quiz) => (
-          <Tr key={quiz.id}>
-            <Td>{quiz.name}</Td>
-            <Td>{quiz.subject}</Td>
-            <Td>{quiz.type}</Td>
-            <Td>{quiz.time}</Td>
-            <Td textAlign={"right"}>
-              <Button colorScheme="orange">Take Quiz</Button>
-            </Td>
+    <>
+      <Table variant="striped">
+        <Thead>
+          <Tr>
+            <Th>Quiz Name</Th>
+            <Th>Subject</Th>
+            <Th>Quiz Type</Th>
+            <Th>Time</Th>
+            <Th textAlign={"right"}></Th>
           </Tr>
-        ))}
-      </Tbody>
-    </Table>
-    <Center>
-        <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          pageCount={Math.ceil(quizzes.length / ITEMS_PER_PAGE)}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination"}
-          previousLinkClassName={"pagination__link"}
-          nextLinkClassName={"pagination__link"}
-          disabledClassName={"pagination__link--disabled"}
-          activeClassName={"pagination__link--active"} 
+        </Thead>
+        <Tbody>
+          {pagedQuizzes.map((quiz) => (
+            <Tr key={quiz.id}>
+              <Td>{quiz.name}</Td>
+              <Td>{quiz.subject}</Td>
+              <Td>{quiz.type}</Td>
+              <Td>{quiz.time}</Td>
+              <Td textAlign={"right"}>
+                <Button colorScheme="orange">Take Quiz</Button>
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+
+      <Flex justifyContent="center" mt={5}>
+        <Box display="inline-block" borderRadius="md" border="0px solid gray" >
+          <ReactPaginate
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            pageCount={Math.ceil(quizzes.length / ITEMS_PER_PAGE)}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination"}
+            previousLinkClassName={"pagination__link"}
+            nextLinkClassName={"pagination__link"}
+            disabledClassName={"pagination__link--disabled"}
+            activeClassName={"pagination__link--active"} 
           />
-    </Center>
+        </Box>
+      </Flex>
     </>
   );
 };
 
 /**
- * To load data to the designed QuizTable
+ * To load data to the designed QuizTable and to load css styles to the quiz table since there is no styles for pagination in Chakra UI
  * @returns data for the quiz table
  */
 const TableView2 = () => {
-  return <QuizTable quizzes={quizzes} />;
+  return (
+    <>
+      <Global
+        styles={`
+          .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            pointer-events: auto;
+            cursor: pointer;
+            list-style:none;s
+          }
+          
+          ::marker {
+            list-style: none;
+            display:none;
+          }
+
+          .pagination li a{
+            display: inline-block;
+            margin: 0 10px;
+            border: 1px solid orange;
+            padding: 10px;
+            border-radius:5px;
+            background-color:#FFFFCE;
+            cursor: pointer;
+            pointer-events: auto;
+            font-weight:bold;
+          }
+
+
+          .pagination li a.active{
+            color: black;
+            bg-color:orange;
+          }
+
+          .pagination li.hover{
+            background-color:orange;
+          }
+
+          .pagination li.clicked{
+            background-color:orange;
+            color:orange;
+          }
+
+          .pagination__link--active {
+            color: #DD6B20;
+          }
+
+          .pagination__link--disabled {
+            opacity: 0.5;
+            pointer-events: none;
+          }
+        `}
+      />
+      <QuizTable quizzes={quizzes} />
+    </>
+  );
 };
 
 export default TableView2;

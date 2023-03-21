@@ -1,5 +1,5 @@
 /**
- * Defining the types of data used in the Quiz Bank Page
+ * Defining the types of data used in the QuizBank Table
  */
 export interface Quiz {
     id: number;
