@@ -48,7 +48,7 @@ export default function QuizBank({ quizzes }) {
           <Box justifyContent="center">
             <Card />
           </Box>
-          <Box flex="1" width="80%" mx="auto" justifyContent="center" display={"inline-block"}>
+          <Box flex="1" width="80%" mx="auto" justifyContent="center" display={"inline-block"} marginTop={"10"}>
             <QuizTable quizzes={quizzes} />
           </Box>
           <Footer />
