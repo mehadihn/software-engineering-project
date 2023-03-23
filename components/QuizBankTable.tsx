@@ -12,16 +12,17 @@ interface Props {
   quizzes: Quiz[];
 }
 
-
 /**
  * to map  data to the table view and to handle pagination
  * @returns table with provided data and pagination
  */
-const QuizTable = ({ quizItem }: Props) => {
+const QuizTable =  (quizItem) => {
   const [currentPage, setCurrentPage] = useState(0);
   const quizzes: Quiz[] = quizItem.data
+
   const ITEMS_PER_PAGE = 5;
   const PAGE_COUNT = Math.ceil(quizzes.length / ITEMS_PER_PAGE)
+
   const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
@@ -31,60 +32,7 @@ const QuizTable = ({ quizItem }: Props) => {
 
   return (
     <>
-      <Table variant="striped">
-        <Thead>
-          <Tr>
-            <Th>Quiz Name</Th>
-            <Th>Subject</Th>
-            <Th>Quiz Type</Th>
-            <Th>Quiz Weight</Th>
-            <Th>Time</Th>
-            <Th textAlign={"right"}></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {pagedQuizzes.map((quiz) => (
-            <Tr key={quiz.id}>
-              <Td>{quiz.name}</Td>
-              <Td>{quiz.subject}</Td>
-              <Td>{quiz.type}</Td>
-              <Td>{quiz.marks}</Td>
-              <Td>{quiz.time} min</Td>
-              <Td textAlign={"right"}>
-                <Button colorScheme="orange">Take Quiz</Button>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-
-      <Flex justifyContent="center" mt={5}>
-        <Box display="inline-block" borderRadius="md" border="0px solid gray" >
-          <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            pageCount={PAGE_COUNT}
-            onPageChange={handlePageClick}
-            containerClassName={"pagination"}
-            previousLinkClassName={"pagination__link"}
-            nextLinkClassName={"pagination__link"}
-            disabledClassName={"pagination__link--disabled"}
-            activeClassName={"pagination__link--active"} 
-          />
-        </Box>
-      </Flex>
-    </>
-  );
-};
-
-/**
- * To load data to the designed QuizTable and to load css styles to the quiz table since there is no styles for pagination in Chakra UI
- * @returns data for the quiz table
- */
-const TableView2 = (data) => {
-  return (
-    <>
-      <Global
+    <Global
         styles={`
           .pagination {
             display: flex;
@@ -137,9 +85,51 @@ const TableView2 = (data) => {
           }
         `}
       />
-      <QuizTable quizItem={data} />
+
+      <Table variant="striped">
+        <Thead>
+          <Tr>
+            <Th>Quiz Name</Th>
+            <Th>Subject</Th>
+            <Th>Quiz Type</Th>
+            <Th>Quiz Weight</Th>
+            <Th>Time</Th>
+            <Th textAlign={"right"}></Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {pagedQuizzes.map((quiz) => (
+            <Tr key={quiz.id}>
+              <Td>{quiz.name}</Td>
+              <Td>{quiz.subject}</Td>
+              <Td>{quiz.type}</Td>
+              <Td>{quiz.marks}</Td>
+              <Td>{quiz.time} min</Td>
+              <Td textAlign={"right"}>
+                <Button colorScheme="orange">Take Quiz</Button>
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+
+      <Flex justifyContent="center" mt={5}>
+        <Box display="inline-block" borderRadius="md" border="0px solid gray" >
+          <ReactPaginate
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            pageCount={PAGE_COUNT}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination"}
+            previousLinkClassName={"pagination__link"}
+            nextLinkClassName={"pagination__link"}
+            disabledClassName={"pagination__link--disabled"}
+            activeClassName={"pagination__link--active"} 
+          />
+        </Box>
+      </Flex>
     </>
   );
 };
 
-export default TableView2;
+export default QuizTable;
