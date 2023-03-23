@@ -14,21 +14,19 @@ interface Props {
 
 
 /**
- * Defining the number of items per a page for pagination. 
- */
-const ITEMS_PER_PAGE = 5;
-
-/**
  * to map  data to the table view and to handle pagination
  * @returns table with provided data and pagination
  */
 const QuizTable = ({ quizItem }: Props) => {
   const [currentPage, setCurrentPage] = useState(0);
   const quizzes: Quiz[] = quizItem.data
+  const ITEMS_PER_PAGE = 5;
+  const PAGE_COUNT = Math.ceil(quizzes.length / ITEMS_PER_PAGE)
   const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
   const offset = currentPage * ITEMS_PER_PAGE;
+  
   const pagedQuizzes = quizzes.slice(offset, offset + ITEMS_PER_PAGE);
 
   return (
@@ -65,7 +63,7 @@ const QuizTable = ({ quizItem }: Props) => {
           <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}
-            pageCount={Math.ceil(quizzes.length / ITEMS_PER_PAGE)}
+            pageCount={PAGE_COUNT}
             onPageChange={handlePageClick}
             containerClassName={"pagination"}
             previousLinkClassName={"pagination__link"}
