@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
-import { Table, Thead, Tbody, Tr, Th, Td, Button, Center, Flex, HStack, Box } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, Button, Center, Flex, HStack, Box, cookieStorageManager } from "@chakra-ui/react";
 import {Quiz} from "../src/models/studentQuizBank";
 /**
  * to load css styles to the page since there are no default pagination in Chakra UI
@@ -12,82 +12,6 @@ interface Props {
   quizzes: Quiz[];
 }
 
-/**
- * Adding sample data to the table, these will be replaced by the database data
- */
-const quizzes: Quiz[] = [
-  {
-    id: 1,
-    name: "Quiz 1",
-    subject: "Math",
-    type: "Multiple Choice",
-    time:"60 min"
-  },
-  {
-    id: 2,
-    name: "Quiz 2",
-    subject: "English",
-    type: "True or False",
-    time:"60 min"
-  },
-  {
-    id: 3,
-    name: "Quiz 8",
-    subject: "Science",
-    type: "Fill in the Blanks",
-    time:"60 min"
-  },
-  {
-    id: 4,
-    name: "Quiz 15",
-    subject: "IQ",
-    type: "Short Answer",
-    time:"60 min"
-  },
-  {
-    id: 5,
-    name: "Quiz 16",
-    subject: "IQ",
-    type: "Short Answer",
-    time:"60 min"
-  },
-  {
-    id: 6,
-    name: "Quiz 17",
-    subject: "IQ",
-    type: "Short Answer",
-    time:"60 min"
-  },
-  {
-    id: 7,
-    name: "Quiz 18",
-    subject: "IQ",
-    type: "Short Answer",
-    time:"60 min"
-  },
-  {
-    id: 8,
-    name: "Quiz 19",
-    subject: "IQ",
-    type: "Short Answer",
-    time:"60 min"
-  },
-  {
-    id: 9,
-    name: "Quiz 20",
-    subject: "IQ",
-    type: "Short Answer",
-    time:"60 min"
-  },
-  {
-    id: 10,
-    name: "Quiz 21",
-    subject: "IQ",
-    type: "Short Answer",
-    time:"60 min"
-  }
-  // Add more quizzes as needed
-];
 
 /**
  * Defining the number of items per a page for pagination. 
@@ -98,14 +22,13 @@ const ITEMS_PER_PAGE = 5;
  * to map  data to the table view and to handle pagination
  * @returns table with provided data and pagination
  */
-const QuizTable = ({ quizzes }: Props) => {
+const QuizTable = ({ quizItem }: Props) => {
   const [currentPage, setCurrentPage] = useState(0);
-
+  const quizzes: Quiz[] = quizItem.data
   const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
   const offset = currentPage * ITEMS_PER_PAGE;
-
   const pagedQuizzes = quizzes.slice(offset, offset + ITEMS_PER_PAGE);
 
   return (
@@ -116,6 +39,7 @@ const QuizTable = ({ quizzes }: Props) => {
             <Th>Quiz Name</Th>
             <Th>Subject</Th>
             <Th>Quiz Type</Th>
+            <Th>Quiz Weight</Th>
             <Th>Time</Th>
             <Th textAlign={"right"}></Th>
           </Tr>
@@ -126,7 +50,8 @@ const QuizTable = ({ quizzes }: Props) => {
               <Td>{quiz.name}</Td>
               <Td>{quiz.subject}</Td>
               <Td>{quiz.type}</Td>
-              <Td>{quiz.time}</Td>
+              <Td>{quiz.marks}</Td>
+              <Td>{quiz.time} min</Td>
               <Td textAlign={"right"}>
                 <Button colorScheme="orange">Take Quiz</Button>
               </Td>
@@ -158,7 +83,7 @@ const QuizTable = ({ quizzes }: Props) => {
  * To load data to the designed QuizTable and to load css styles to the quiz table since there is no styles for pagination in Chakra UI
  * @returns data for the quiz table
  */
-const TableView2 = () => {
+const TableView2 = (data) => {
   return (
     <>
       <Global
@@ -214,7 +139,7 @@ const TableView2 = () => {
           }
         `}
       />
-      <QuizTable quizzes={quizzes} />
+      <QuizTable quizItem={data} />
     </>
   );
 };
