@@ -2,10 +2,7 @@
  * Defining NavBar for all the student pages using Chakra UI Framwork for react
  */
 import { useSession, signOut } from 'next-auth/react';
-
-import Router from "next/router";
-import { useEffect } from "react";
-
+import { useRouter } from 'next/router';
 
 import { ReactNode } from 'react';
 import {
@@ -25,17 +22,22 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon} from '@chakra-ui/icons';
 
+let Links = [
+  { name: 'Home', url: '/' },
+  { name: 'Take a Quiz', url: '/student/quizBank' }
+];
+
+
 /**
  * Defining the Menu links in an array for easy customization
  */
-const Links = ['Home','Take a Quiz'];
 
 /**
  * To create links for the navigation bar items
  * @param param0 If there are any children properties for Navlink 
  * @returns the navigation links which are currently set to display the same page
  */
-const NavLink = ({ children }: { children: ReactNode }) => (
+const NavLink = ({ children, href  }: { children: ReactNode }) => (
   <Link
     fontWeight={"bold"}
     px={2}
@@ -45,7 +47,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={'#'}>
+    href={href}>
     {children}
   </Link>
 );
@@ -77,7 +79,8 @@ export default function Navbar() {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+
+                <NavLink key={link.name} href={link.url}>{link.name}</NavLink>
               ))}
             </HStack>
           </HStack>
@@ -96,7 +99,6 @@ export default function Navbar() {
               colorScheme={'orange'}
               size={'sm'}
               mr={4}
-              onClick={() => signOut()}
               >
               Log Out
             </Button>
