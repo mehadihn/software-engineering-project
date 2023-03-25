@@ -8,7 +8,7 @@ import {Quiz} from "../src/models/studentQuizBank";
  */
 import GlobalStyles from "./globalStyles"
 
-interface Props {
+interface QuizBankProps {
   quizzes: Quiz[];
 }
 
@@ -16,14 +16,14 @@ interface Props {
  * to map  data to the table view and to handle pagination
  * @returns table with provided data and pagination
  */
-const QuizTable =  (quizItem) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const quizzes: Quiz[] = quizItem.data
 
+const QuizTable =  ({ quizzes }: QuizBankProps) => {
+  const [currentPage, setCurrentPage] = useState(0);
   const ITEMS_PER_PAGE = 5;
-  const PAGE_COUNT = Math.ceil(quizzes.length / ITEMS_PER_PAGE)
+  
+  const PAGE_COUNT = Math.ceil(quizzes.quiz.length / ITEMS_PER_PAGE)
   const offset = currentPage * ITEMS_PER_PAGE;
-  const pagedQuizzes = quizzes.slice(offset, offset + ITEMS_PER_PAGE);
+  const pagedQuizzes = quizzes.quiz.slice(offset, offset + ITEMS_PER_PAGE);
 
   const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);

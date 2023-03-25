@@ -6,6 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import NavBar from "../../../components/studentNavbar";
 import Footer from "../../../components/Footer";
 import Card from "../../../components/QuizBankTitle";
+import {Quiz} from "../../../src/models/studentQuizBank.tsx";
 
 import QuizTable from "../../../components/QuizBankTable";
 import { Box } from "@chakra-ui/react";
@@ -21,14 +22,12 @@ export async function getServerSideProps() {
     const client = await clientPromise;
     const db = client.db("test");
     const quiz = await db.collection("quizes").find({}).toArray();
-
     return {
       props: {
         quiz: JSON.parse(JSON.stringify(quiz))
       },
     };
   } catch (e) {
-    console.log("IN ERROR")
     console.error(e);
   }
 }
@@ -39,7 +38,7 @@ export async function getServerSideProps() {
  * @returns 
  */
 
-export default function QuizBank({ quiz }) {
+export default function QuizBank(quizzes: Array<Quiz>) {
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -76,7 +75,7 @@ export default function QuizBank({ quiz }) {
                 <Card />
               </Box>
               <Box flex="1" width="80%" mx="auto" justifyContent="center" display={"inline-block"} marginTop={"10"}>
-                <QuizTable data={quiz} />
+                <QuizTable quizzes={quizzes}/>
               </Box>
               <Footer />
             </Box>
