@@ -4,7 +4,7 @@
 import React from "react";
 import { useRouter } from 'next/router'
 import { InputGroup, Card, InputLeftElement, Input, 
-        Center, useToast, Link,Text } from "@chakra-ui/react";
+        Center, useToast, Link,Text, FormControl } from "@chakra-ui/react";
 import { LockIcon, TimeIcon } from '@chakra-ui/icons'
 import { Box,useColorModeValue,SimpleGrid,Button,Image,chakra,Stack } from "@chakra-ui/react";
 
@@ -20,6 +20,19 @@ export default function resetPassword() {
     const toast = useToast();
     const router = useRouter();
 
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        toast({
+            title: "Success",
+            description: "Integration of Password Reset with Backend will be done in next sprint ",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+            colorScheme: 'gray'
+        })
+
+        router.push("/")
+        }
 
     return (
         <>
@@ -66,10 +79,12 @@ export default function resetPassword() {
                             marginStart={20}
                             mt={10}
                         >
-                        <Stack spacing={6} mt={14} marginStart={8} marginEnd={8}
+                             <form action="" method="post" onSubmit={handleSubmit}>
+                        <Stack spacing={4} mt={14} marginStart={8} marginEnd={8}
                         >
-                            {/* <FormControl id="email"> */}
-
+                            
+                       
+                            <FormControl id="otp" isRequired>
                             <InputGroup>
                                     <InputLeftElement
                                         pointerEvents='none'
@@ -77,10 +92,11 @@ export default function resetPassword() {
                                         fontSize='1.4em'
                                         children={<TimeIcon color='yellow.400' />}
                                     />
-                                    <Input id="email" bg='yellow.400' marginLeft={10} marginEnd={10} type='number' placeholder='Enter OTP' textColor={'white'} />
+                                    <Input id="otp" bg='yellow.400' marginLeft={10} marginEnd={10} type='number' placeholder='Enter OTP' textColor={'white'} required />
                                 </InputGroup>
+                            </FormControl>
 
-
+                            <FormControl id="password" isRequired>
                                 <InputGroup>
                                     <InputLeftElement
                                         pointerEvents='none'
@@ -88,9 +104,11 @@ export default function resetPassword() {
                                         fontSize='1.4em'
                                         children={<LockIcon color='yellow.400' />}
                                     />
-                                    <Input id="email" bg='yellow.400' marginLeft={10} marginEnd={10} type='email' placeholder='New Password' textColor={'white'} />
+                                    <Input id="password" bg='yellow.400' marginLeft={10} marginEnd={10} type='text' placeholder='New Password' textColor={'white'} required/>
                                 </InputGroup>
+                            </FormControl>
 
+                            <FormControl id="confirmPassword" isRequired>
                                 <InputGroup>
                                     <InputLeftElement
                                         pointerEvents='none'
@@ -98,21 +116,13 @@ export default function resetPassword() {
                                         fontSize='1.4em'
                                         children={<LockIcon color='yellow.400' />}
                                     />
-                                    <Input id="email" bg='yellow.400' marginLeft={10} marginEnd={10} type='email' placeholder='Confirm Password' textColor={'white'} />
+                                    <Input id="confirmPassword" bg='yellow.400' marginLeft={10} marginEnd={10} type='text' placeholder='Confirm Password' textColor={'white'} required/>
                                 </InputGroup>
+                            </FormControl>
 
                             <Center h='50px' color='white'>
                             <Button width={60} height={10} bg={useColorModeValue("yellow.400", "yellow.400")}
-                                textColor={"white"}  size="lg"
-                                onClick={() =>  toast({
-                                    title: "Success",
-                                    description: "Password Reset Successful",
-                                    status: "success",
-                                    duration: 9000,
-                                    isClosable: true,
-                                    colorScheme: 'gray'
-                                })
-                            }
+                                textColor={"white"}  size="lg" type="submit"
                                 _hover={{
                                     bg: "gray.500",
                                   }}
@@ -120,11 +130,12 @@ export default function resetPassword() {
                                 Confirm
                             </Button>
                             </Center>
-
                             <Center h='50px' color='white' mt={8}>
                                <Link color="gray.600" fontSize={14} fontStyle={'italic'} onClick={() => router.push("/")}>Go back to Login</Link>
                             </Center>
                         </Stack>
+                        </form>
+
                     </Card>
                     </Box>
                     <Box ml={20}>

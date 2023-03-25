@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
-import { Table, Thead, Tbody, Tr, Th, Td, Button, Center, Flex, HStack, Box, cookieStorageManager } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, Button, Center, Flex, HStack, Box } from "@chakra-ui/react";
 import {Quiz} from "../src/models/studentQuizBank";
 /**
  * to load css styles to the page since there are no default pagination in Chakra UI
@@ -33,7 +33,6 @@ const QuizTable =  (quizItem) => {
   return (
     <>
     <GlobalStyles/>
-
       <Table variant="striped">
         <Thead>
           <Tr>
@@ -79,5 +78,6 @@ const QuizTable =  (quizItem) => {
     </>
   );
 };
+
 
 export default QuizTable;
