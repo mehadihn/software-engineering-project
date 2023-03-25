@@ -7,7 +7,6 @@ import {Quiz} from "../src/models/studentQuizBank";
  * to load css styles to the page since there are no default pagination in Chakra UI
  */
 import GlobalStyles from "./globalStyles"
-import { Global } from '@emotion/react';
 
 interface Props {
   quizzes: Quiz[];

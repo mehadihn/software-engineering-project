@@ -2,10 +2,8 @@
  * Added css styles for pagination. 
  * Exported css as a js constant to be used in the component as css is not allowed to be loaded to conponents as stylesheets in Nextjs. 
  */
-import {
-    Global 
-}
-from '@emotion/react';
+import { Global } from '@emotion/react';
+
 const globalStyles=` .pagination {
     display: flex;
     justify-content: center;
