@@ -6,7 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import NavBar from "../../../components/studentNavbar";
 import Footer from "../../../components/Footer";
 import Card from "../../../components/QuizBankTitle";
-import {Quiz} from "../../../src/models/studentQuizBank.tsx";
+import {Quiz} from "../../../src/models/studentQuizBank";
 
 import QuizTable from "../../../components/QuizBankTable";
 import { Box } from "@chakra-ui/react";
