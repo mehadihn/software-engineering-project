@@ -50,7 +50,7 @@ const QuizTable =  ({ quizzes }: QuizBankProps) => {
               <Td>{quiz.name}</Td>
               <Td>{quiz.subject}</Td>
               <Td>{quiz.type}</Td>
-              <Td>{quiz.marks}</Td>
+              <Td>{quiz.maxMarks}</Td>
               <Td>{quiz.time} min</Td>
               <Td textAlign={"right"}>
                 <Button colorScheme="orange">Take Quiz</Button>
