@@ -3,23 +3,39 @@
  */
 import { useRouter } from 'next/router'
 import React from "react";
-import { InputGroup, Card, InputLeftElement, Input, Center, useToast } from "@chakra-ui/react";
+import { InputGroup, Card, InputLeftElement, Input, Center, useToast ,FormControl} from "@chakra-ui/react";
 import { EmailIcon } from '@chakra-ui/icons'
 import { Box,useColorModeValue,SimpleGrid,Button,Image,chakra,Stack } from "@chakra-ui/react";
+import type { NextPage } from "next";
 
 /**
  * Creates a User interface for Forgot Password.
  * Ask for email address.
  * If success it will direct to the reset password page.
 */
-export default function forgotPassword() {
+const forgotPassword: NextPage = () => {
+
+// export default function forgotPassword() {
     const cardStyle = {
         opacity: 0.95
     }
     const router = useRouter();
     const toast = useToast();
 
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        toast({
+            title: "Success",
+            description: "An email has been sent to your mailing address",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+            colorScheme: 'gray'
+        })
 
+        router.push("/resetPassword")
+
+        }
     return (
         <>
             <Box mx="auto" h={"100vh"} bg={"yellow.100"}>
@@ -60,14 +76,16 @@ export default function forgotPassword() {
                         </chakra.h1>
 
                         <Card bgColor='#E7DEEA'
-                            maxWidth='80vw' minHeight="44vh"
+                            maxWidth='80vw' minHeight="30vh"
                             borderRadius={'30px'} sx={cardStyle}
                             marginStart={20}
                             mt={10}
                         >
                         <Stack spacing={6} mt={14} marginStart={8} marginEnd={8}
                         >
-                            {/* <FormControl id="email"> */}
+                        <form action="" method="post" onSubmit={handleSubmit}>
+
+                            <FormControl id="email" isRequired>
                                 <InputGroup>
                                     <InputLeftElement
                                         pointerEvents='none'
@@ -75,21 +93,13 @@ export default function forgotPassword() {
                                         fontSize='1.4em'
                                         children={<EmailIcon color='yellow.400' />}
                                     />
-                                    <Input id="email" bg='yellow.400' marginLeft={10} marginEnd={10} type='email' placeholder='Email ID' textColor={'white'} />
+                                    <Input id="email" bg='yellow.400' marginLeft={10} marginEnd={10} type='email' placeholder='Email ID' textColor={'white'} required />
                                 </InputGroup>
-
-                            <Center h='50px' color='white'>
+                            </FormControl>
+                           
+                            <Center h='50px' color='white' mt={6}>
                             <Button width={60} height={10} bg={useColorModeValue("yellow.400", "yellow.400")}
-                                textColor={"white"}  size="lg"
-                                onClick={() =>  toast({
-                                    title: "Success",
-                                    description: "An email has been sent to your mailing address",
-                                    status: "success",
-                                    duration: 3000,
-                                    isClosable: true,
-                                    colorScheme: 'gray'
-                                })
-                            }
+                                textColor={"white"}  size="lg"   type="submit"
                                 _hover={{
                                     bg: "gray.500",
                                   }}
@@ -97,27 +107,15 @@ export default function forgotPassword() {
                                 Send Verification Code
                             </Button>
                             </Center>
-
-                            <Center h='50px' color='white'>
-                            <Button width={60} height={10} bg={useColorModeValue("yellow.400", "yellow.400")}
-                                textColor={"white"}  size="lg"
-                                onClick={() => router.push("/resetPassword")}
-                                _hover={{
-                                    bg: "gray.500",
-                                  }}
-                            >
-                                Continue
-                            </Button>
-                            </Center>
-
-
+                            </form>
+                    
                         </Stack>
                     </Card>
                     </Box>
                     <Box ml={20}>
 
                         <Image
-                            src="/img/forgot.avif"
+                            src="/img/forgot.png"
                             alt="quiz"
                             fit="cover"
                             h={"100vh"}
@@ -130,3 +128,5 @@ export default function forgotPassword() {
         </>
     )
 }
+
+export default forgotPassword;

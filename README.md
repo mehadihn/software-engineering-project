@@ -160,6 +160,19 @@ Sign in with the credentials: `username: Adi@Adi.com` and  `password: 4321`.
 - User will arrive at the `/Students` page where scored quizzes will be visible.
 - Clicking the `Retake Quiz` button will reset the score to -1.
 
+## Available Screens for students
+
+1. Student Dashboard
+- This is the initial screen for a student logged in to the system successfully.<br/>
+![student dashboard](docs/UI_Screenshots/Students/student-dashboard.png)
+
+2. Student Quiz Bank
+- This is the second tab in the Main Menu.
+- This contains unattempted quizzes for the student logged in. 
+- Student can select a quiz and attempt the quiz by clicking on the "Take Quiz" button along with it. <br/>
+![student quizbank](docs/UI_Screenshots/Students/student-quizbank.png)
+
+
 ## Performance Review
 
 You can find the performance reviews [here](docs/Performance%20Review/Review.pdf)
