@@ -9,7 +9,8 @@ import {
   Input,
   Button,
   Box,
-  Flex
+  Flex,
+  useToast,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
 /**
@@ -17,6 +18,15 @@ import ReactPaginate from "react-paginate";
  */
 import GlobalStyles from "./globalStyles"
 import Question from "../src/business/models/question";
+import adminHome from "../pages/admin";
+import { useSession, getSession, signIn, signOut } from "next-auth/react";
+
+
+
+type Question = {
+  id: number;
+  text: string;
+};
 
 interface ShortAnswerQuestionsProps {
   questions: Question[];
@@ -24,6 +34,16 @@ interface ShortAnswerQuestionsProps {
   emailValue: string;
   totalMarks:number;
 }
+/**
+ * defining the set of question sets
+ */
+let texts = ["What is your name before the marriage if you are married ?sumrish","What is your favorite color?black","What is your favorite food?biryani","What is your favorite animal?dog","What is your favorite book?novel","What is your favorite book when you were in high school and still willing to read?novel"]
+/**
+ * Adding sample data to the quiz, this will be replaced by the database data
+ * id will be auto incremented as the mapping loop index in order to provide a rerialized question id to the questions in the quizz
+ */
+const questions: Question[] = texts.map((text, index) => ({ id: index + 1, text: text.split('?')[0] , answer: text.split('?')[1]}));
+
 /**
  * define question items per page for pagination
  */
@@ -39,19 +59,68 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
    * Calculations for pagination
    */
   const [currentPage, setCurrentPage] = useState(0);
+
+  let indexUpdate  = 0; 
   const totalPages = Math.ceil(questions.length / ITEMS_PER_PAGE);
-  const handlePageClick = ({ selected }: { selected: number }) => { 
-    setCurrentPage(selected); 
+  const handlePageClick = ({ selected }: { selected: number }) => {
+    console.log("Seclected" + selected);
+    indexUpdate = 3
+    setCurrentPage(selected);
+  
   };
   const startIndex = currentPage * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentQuestions = questions.slice(startIndex, endIndex);
+  const [formValues, setFormValues] = useState([]);
+
+  const { data: session, status } = useSession();
+
+  const handleChange = (event, index) => {
+    indexUpdate = currentPage * 3;
+    // console.log(index + indexUpdate);
+    const { name, value } = event.target;
+    const newFormValues = [...formValues];
+    newFormValues[index+ indexUpdate] = { ...newFormValues[index + indexUpdate], [name]: value };
+    setFormValues(newFormValues);
+  };
+
+  let marks = 0
+
+  
+  const handleSubmit = (event) => {
+
+    
+    event.preventDefault();
+
+    let finalArray = []
+    const monkey = (dict) => {
+      for (var key in dict) {
+      if (dict.hasOwnProperty(key)) {
+        console.log(dict[key]);
+        finalArray.push(dict[key])
+      }
+      }
+  }
+  formValues.map(x => monkey(x))
+
+  for (let j = 0; j < finalArray.length; j++){
+    if(questions[j].answer == finalArray[j]){
+              console.log("Correct Answer")
+              marks = marks +1
+          }
+        }
+
+    console.log("Total marks" + marks)
+
+  };
+
+
   return (
     <Flex>
       <GlobalStyles/>
       <VStack spacing={10} align={"stretch"} justify={"center"}>
-        <form>
-            {currentQuestions.map((q,index) => (
+        <form action="" method="post" onSubmit={handleSubmit}>
+            {currentQuestions.map((q, index) => (
               <Box
                 key={q.question}
                 bg="#F2F2E4"
@@ -61,11 +130,19 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
                 borderColor="gray.200"
                 marginTop={"3"}
               >
-                <FormControl>
+                <FormControl id="answer">
                   <FormLabel>
                     Question {startIndex + index + 1}: {q.question}
                   </FormLabel>
-                    <Input backgroundColor={"white"} width="50%"/>
+                    <Input 
+                      type="text" 
+                      id="answer" 
+                      backgroundColor={"white"} width="50%"
+                      key={index}
+                      name={`input${index}`} // use a unique name for each input
+                      value={q ? q[`input${index}`] : ""} // use the corresponding value from the state
+                      onChange={(event) => handleChange(event, index)}
+                     />
                 </FormControl>
               </Box>
             ))}
@@ -84,7 +161,8 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
             />
           </Flex>
           <Flex justifyContent="center" mt={10}>
-            <Button type="submit" colorScheme="orange" mt={4}>
+            <Button id="submit" type="submit" colorScheme="orange" mt={4} >
+              {" "}
               Submit
             </Button>
           </Flex>
