@@ -21,7 +21,29 @@ import Question from "../src/business/models/question";
 import adminHome from "../pages/admin";
 import { useSession, getSession, signIn, signOut } from "next-auth/react";
 
+export async function updateMarks(postId: number, subject: string, marks: number) {
+  try {
+    const options: any = {
+      method: "POST",
 
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+
+      body: `{"marks": ${marks}, "subject": "${subject}"}`, 
+
+    };
+
+    let response = await fetch(`/api/quizes/quizMarks?id=${postId}`, options)
+      .then((response) => response.json())
+      .then((response) => console.log(response))
+      .catch((err) => console.error(err));
+
+  } catch (error) {
+    console.log("An error occured while updating marks ", error);
+  }
+}
 
 type Question = {
   id: number;
@@ -105,12 +127,14 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
 
   for (let j = 0; j < finalArray.length; j++){
     if(questions[j].answer == finalArray[j]){
-              console.log("Correct Answer")
+              // console.log("Correct Answer")
               marks = marks +1
           }
         }
 
-    console.log("Total marks" + marks)
+    // console.log("Total marks" + marks)
+    updateMarks("6421f6d62f585fab90f5328f" as Number,"Biology",  marks)
+    console.log("Marks Updated Successfully");
 
   };
 
