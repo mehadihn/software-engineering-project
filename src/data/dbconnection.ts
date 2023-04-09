@@ -1,6 +1,7 @@
 import { MongoClient , InsertOneResult } from "mongodb";
 import Quiz, { UserQuiz , AdminQuizList} from "../business/models/Quiz";
 import IQuestion from "../business/models/IQuestion";
+import Question from "../business/models/question";
 import Student from "../business/models/Student";
 import IHandleQuizData from "../business/interfaces/IHandleQuizData";
 import IGetQuestionData from "../business/interfaces/IGetQuestionData";
@@ -346,6 +347,29 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
       else{
         return false
       }
+    }
+  }
+  /**
+   * to find the question list of a certain quiz
+   * @param subject - subject of the quizz(this is the identifier used to find the quiz which a certain question is belongs to)
+   */
+  async findQuestionListOfAQuiz(subject:string){
+    const client = new MongoClient(this.uri);
+    var questions: Question[] | null=null;
+    try{
+      await client.connect();
+      questions = await client
+        .db("test")
+        .collection<Question>("questions")
+        .find({subject})
+        .toArray();
+    }
+    catch(err){
+      console.error(err);
+    }
+    finally {
+      await client.close();
+      return questions;
     }
   }
 }

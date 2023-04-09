@@ -16,22 +16,11 @@ import ReactPaginate from "react-paginate";
  * to load css styles to the page since there are no default pagination in Chakra UI
  */
 import GlobalStyles from "./globalStyles"
+import Question from "../src/business/models/question";
 
-type Question = {
-  id: number;
-  text: string;
-};
-
-/**
- * defining the set of question sets
- */
-let texts = ["What is your name before the marriage if you are married ?","What is your favorite color?","What is your favorite food?","What is your favorite animal?","What is your favorite book?","What is your favorite book when you were in high school and still willing to read?"]
-/**
- * Adding sample data to the quiz, this will be replaced by the database data
- * id will be auto incremented as the mapping loop index in order to provide a rerialized question id to the questions in the quizz
- */
-const questions: Question[] = texts.map((text, index) => ({ id: index + 1, text }));
-
+interface ShortAnswerQuestionsProps {
+  questions: Question[];
+}
 /**
  * define question items per page for pagination
  */
@@ -41,35 +30,24 @@ const ITEMS_PER_PAGE = 3;
  * 
  * @returns returns a UI with short answer quizz containing quiz items(question and input for ander) and pagination for easy navigation
  */
-export default function shortAnswerQuestions() {
+const ShortAnswerQuestions = ({questions}:ShortAnswerQuestionsProps)=>{
+  /**
+   * Calculations for pagination
+   */
   const [currentPage, setCurrentPage] = useState(0);
-
-  /**
-   * Determining number of pages in total for pagination
-   */
   const totalPages = Math.ceil(questions.length / ITEMS_PER_PAGE);
-  const handlePageClick = ({ selected }: { selected: number }) => {
-    setCurrentPage(selected);
-  
-  };
-  /**
-   * Define other necessary values for pagination
-   * Adding global css with react emotion since chakra ui does not provide default pagination styles
-   * maping quizitems with form items
-   * And display data with pagination
-   */
+  const handlePageClick = ({ selected }: { selected: number }) => { setCurrentPage(selected); };
   const startIndex = currentPage * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentQuestions = questions.slice(startIndex, endIndex);
   return (
-    
     <Flex>
       <GlobalStyles/>
       <VStack spacing={10} align={"stretch"} justify={"center"}>
         <form>
-            {currentQuestions.map((q) => (
+            {currentQuestions.map((q,index) => (
               <Box
-                key={q.id}
+                key={q.question}
                 bg="#F2F2E4"
                 p={4}
                 borderRadius="lg"
@@ -79,7 +57,7 @@ export default function shortAnswerQuestions() {
               >
                 <FormControl>
                   <FormLabel>
-                    Question {q.id}: {q.text}
+                    Question {startIndex + index + 1}: {q.question}
                   </FormLabel>
                     <Input backgroundColor={"white"} width="50%"/>
                 </FormControl>
@@ -108,4 +86,5 @@ export default function shortAnswerQuestions() {
       </VStack>
     </Flex>
   );
-}
+};
+export default ShortAnswerQuestions;
