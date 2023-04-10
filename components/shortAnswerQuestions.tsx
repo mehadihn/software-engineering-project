@@ -27,7 +27,8 @@ interface ShortAnswerQuestionsProps {
 const ITEMS_PER_PAGE = 3;
 
 /**
- * 
+ * Passing fetched data to the UI mapping the data fielts with form data attributes.
+ * Since the questions for a quizz coming from the questionbank, there id's are not serialized, so added auto incrementing question id using indec variable
  * @returns returns a UI with short answer quizz containing quiz items(question and input for ander) and pagination for easy navigation
  */
 const ShortAnswerQuestions = ({questions}:ShortAnswerQuestionsProps)=>{
@@ -36,7 +37,9 @@ const ShortAnswerQuestions = ({questions}:ShortAnswerQuestionsProps)=>{
    */
   const [currentPage, setCurrentPage] = useState(0);
   const totalPages = Math.ceil(questions.length / ITEMS_PER_PAGE);
-  const handlePageClick = ({ selected }: { selected: number }) => { setCurrentPage(selected); };
+  const handlePageClick = ({ selected }: { selected: number }) => { 
+    setCurrentPage(selected); 
+  };
   const startIndex = currentPage * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentQuestions = questions.slice(startIndex, endIndex);

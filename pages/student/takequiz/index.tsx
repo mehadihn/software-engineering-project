@@ -11,13 +11,15 @@ import Question from "../../../src/business/models/question";
 interface TakeAQuizProps {
   questions: Array<Question>;
 }
-
+/**
+ * To fetch questionlist from the data layer
+ * @returns JSON string of questions for Math subject as received from the database
+ */
 export async function getServerSideProps() {
   try {
 
     var qd = new MongoQuizData();
     let questions = await qd.findQuestionListOfAQuiz("Math");
-    console.log("the rerurned array of questions: ",questions);
     return {
       props: {
         questions: JSON.parse(JSON.stringify(questions))
@@ -34,6 +36,7 @@ export async function getServerSideProps() {
 }
 /**
  * Function to return Take a Quiz UI for students
+ * @param questions - json string of questions data for Math subject as received from the database.
  * @returns Attempt a Quiz UI for students
  */
 export default function takeAQuiz({ questions }: TakeAQuizProps) {
