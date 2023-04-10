@@ -20,12 +20,9 @@ export async function getServerSideProps(context) {
   const { subject,time } = context.query;
   const subjectValue = subject ? subject : ''; //to derive subject value from query parameters and assigning " " as default value
   const timeValue = time ? time : 0; //to derive time value from query parameters and assigning 0 as default value
-  console.log("subject is: ",subjectValue);
-  console.log("time is: ",timeValue);
   try {
     var qd = new MongoQuizData();
     let questions = await qd.findQuestionListOfAQuiz(subjectValue);
-    console.log("the rerurned array of questions: ",questions);
     return {
       props: {
         questions: JSON.parse(JSON.stringify(questions)),
