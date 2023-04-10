@@ -13,12 +13,15 @@ import { useSession } from "next-auth/react";
 interface TakeAQuizProps {
   questions: Array<Question>;
   subjectValue: string;
+  timeValue: number;
 }
 
 export async function getServerSideProps(context) {
-  const { subject } = context.query;
-  const subjectValue = subject ? subject : '';
+  const { subject,time } = context.query;
+  const subjectValue = subject ? subject : ''; //to derive subject value from query parameters and assigning " " as default value
+  const timeValue = time ? time : 0; //to derive time value from query parameters and assigning 0 as default value
   console.log("subject is: ",subjectValue);
+  console.log("time is: ",timeValue);
   try {
     var qd = new MongoQuizData();
     let questions = await qd.findQuestionListOfAQuiz(subjectValue);
@@ -26,7 +29,8 @@ export async function getServerSideProps(context) {
     return {
       props: {
         questions: JSON.parse(JSON.stringify(questions)),
-        subjectValue
+        subjectValue,
+        timeValue: Number(timeValue)
       },
     };
   } 
@@ -42,7 +46,7 @@ export async function getServerSideProps(context) {
  * Function to return Take a Quiz UI for students
  * @returns Attempt a Quiz UI for students
  */
-export default function takeAQuiz({ questions,subjectValue}: TakeAQuizProps) {
+export default function takeAQuiz({ questions,subjectValue,timeValue}: TakeAQuizProps) {
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -73,7 +77,7 @@ export default function takeAQuiz({ questions,subjectValue}: TakeAQuizProps) {
               <NavBar />
               <Box textAlign={"center"} width={"100%"} margin={"auto"} paddingTop={'2vh'}>
                 <Heading fontSize={'4xl'}>{subjectValue}</Heading>
-                <chakra.h3 fontSize={'xl'} paddingTop={'1vh'}>55:30</chakra.h3>
+                <chakra.h3 fontSize={'xl'} paddingTop={'1vh'}>{timeValue} min</chakra.h3>
               </Box>
               <Box flex="1" mx="auto" justifyContent="center" alignContent={"center"}>
                 <ShortAnswerQuestionList questions={questions}/>
