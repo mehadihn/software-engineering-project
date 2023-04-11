@@ -77,7 +77,7 @@ export default function takeAQuiz({ questions,subjectValue,timeValue}: TakeAQuiz
                 <chakra.h3 fontSize={'xl'} paddingTop={'1vh'}>{timeValue} min</chakra.h3>
               </Box>
               <Box flex="1" mx="auto" justifyContent="center" alignContent={"center"}>
-                <ShortAnswerQuestionList questions={questions}/>
+                <ShortAnswerQuestionList questions={questions} subjectValue={subjectValue}/>
               </Box>
               <Footer />
             </Box>
