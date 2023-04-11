@@ -7,7 +7,7 @@ import { Box, Heading, chakra } from "@chakra-ui/react";
 import MongoQuizData from "../../../src/data/dbconnection";
 import Question from "../../../src/business/models/question";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useSession } from "next-auth/react";
 
 interface TakeAQuizProps {
@@ -44,6 +44,17 @@ export async function getServerSideProps(context) {
  * @returns Attempt a Quiz UI for students
  */
 export default function takeAQuiz({ questions,subjectValue,timeValue}: TakeAQuizProps) {
+  /**
+   * To set time to be reduced by 1 in every 60 seconds (60000 milliseconds)
+   */
+  const [currentTime, setCurrentTime] = useState(timeValue);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime((prevTime) => prevTime - 1);
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
   const router = useRouter();
   const { data: session, status } = useSession();
 
@@ -74,7 +85,7 @@ export default function takeAQuiz({ questions,subjectValue,timeValue}: TakeAQuiz
               <NavBar />
               <Box textAlign={"center"} width={"100%"} margin={"auto"} paddingTop={'2vh'}>
                 <Heading fontSize={'4xl'}>{subjectValue}</Heading>
-                <chakra.h3 fontSize={'xl'} paddingTop={'1vh'}>{timeValue} min</chakra.h3>
+                <chakra.h3 fontSize={'xl'} paddingTop={'1vh'}>{currentTime} min</chakra.h3>
               </Box>
               <Box flex="1" mx="auto" justifyContent="center" alignContent={"center"}>
                 <ShortAnswerQuestionList questions={questions} subjectValue={subjectValue}/>
