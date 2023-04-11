@@ -14,6 +14,7 @@ interface TakeAQuizProps {
   questions: Array<Question>;
   subjectValue: string;
   timeValue: number;
+  emailValue:string;
 }
 
 export async function getServerSideProps(context) {
@@ -43,7 +44,7 @@ export async function getServerSideProps(context) {
  * Function to return Take a Quiz UI for students
  * @returns Attempt a Quiz UI for students
  */
-export default function takeAQuiz({ questions,subjectValue,timeValue}: TakeAQuizProps) {
+export default function takeAQuiz({ questions,subjectValue,timeValue,emailValue}: TakeAQuizProps) {
   /**
    * To set time to be reduced by 1 in every 60 seconds (60000 milliseconds)
    */
@@ -61,6 +62,11 @@ export default function takeAQuiz({ questions,subjectValue,timeValue}: TakeAQuiz
   const userRole = (session: any) => {
     let role = session?.user?.role;
     if (role) return role;
+    return null;
+  };
+  const userEmail = (session: any) => {
+    let email = session?.user?.email;
+    if (email) return email;
     return null;
   };
   useEffect(() => {
@@ -88,7 +94,7 @@ export default function takeAQuiz({ questions,subjectValue,timeValue}: TakeAQuiz
                 <chakra.h3 fontSize={'xl'} paddingTop={'1vh'}>{currentTime} min</chakra.h3>
               </Box>
               <Box flex="1" mx="auto" justifyContent="center" alignContent={"center"}>
-                <ShortAnswerQuestionList questions={questions} subjectValue={subjectValue}/>
+                <ShortAnswerQuestionList questions={questions} subjectValue={subjectValue} emailValue={userEmail(session)}/>
               </Box>
               <Footer />
             </Box>

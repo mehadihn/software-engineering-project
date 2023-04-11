@@ -21,6 +21,7 @@ import Question from "../src/business/models/question";
 interface ShortAnswerQuestionsProps {
   questions: Question[];
   subjectValue: string;
+  emailValue: string;
 }
 /**
  * define question items per page for pagination
@@ -32,7 +33,9 @@ const ITEMS_PER_PAGE = 3;
  * Since the questions for a quizz coming from the questionbank, there id's are not serialized, so added auto incrementing question id using indec variable
  * @returns returns a UI with short answer quizz containing quiz items(question and input for ander) and pagination for easy navigation
  */
-const ShortAnswerQuestions = ({questions,subjectValue}:ShortAnswerQuestionsProps)=>{
+const ShortAnswerQuestions = ({questions,subjectValue,emailValue}:ShortAnswerQuestionsProps)=>{
+  console.log("subject = ",subjectValue);
+  console.log("email= ",emailValue);
   /**
    * Calculations for pagination
    */
