@@ -13,6 +13,7 @@ describe("MongoQuizData", () => {
   let uri;
   let client;
   let quizData;
+  let questionData;
 
   let sandbox = sinon.createSandbox();
 
@@ -256,4 +257,44 @@ describe("MongoQuizData", () => {
 
   });
 
+  describe('findQuestionListOfAQuiz', () => {
+    it('should return an array of questions when given a valid subject', async () => {
+      const subject = 'Geography';
+      const result = await questionData.findQuestionListOfAQuiz(subject);
+      assert(Array.isArray(result));
+      assert(result.length > 0);
+    });
+  
+    it('should return an empty array when given an invalid subject', async () => {
+      const subject = 'InvalidSubject';
+      const result = await questionData.findQuestionListOfAQuiz(subject);
+      assert(Array.isArray(result));
+      assert.strictEqual(result.length, 0);
+    });
+  });
+
+  describe('findQuizTime', () => {
+    it('should return an empty string when no quiz is found', async () => {
+      const subject = 'nonexistent-subject';
+      const time = await quizData.findQuizTime(subject);
+      expect(time).to.equal('');
+    });
+  
+    it('should return the time when the quiz is found', async () => {
+      const subject = 'Science';
+      const quizData = {
+        name: 'Quiz 1',
+        subject: 'Science',
+        type: 'SingleAnswer',
+        time:45,
+        maxMarks:100,
+        attempts:10,
+      };
+      const quiz = client.db('test').collection('quizes');
+      await quiz.insertOne(quizData);
+
+      const time = await quiz.findQuizTime(subject);
+      expect(time).to.equal(quizData.time);
+    });
+  });
 });
