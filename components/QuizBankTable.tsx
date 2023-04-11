@@ -33,10 +33,10 @@ const QuizTable =  ({ quizzes }: QuizBankProps) => {
    * redirecting to take a quiz page passing subkect as a parameter
    */
   const router = useRouter();
-  const handleTakeAQuizButtonClick = async(subject:string, time:number)=>{
+  const handleTakeAQuizButtonClick = async(subject:string)=>{
     router.push({
       pathname: '../../student/takequiz',
-      query: { subject,time },
+      query: { subject },
     });
   }
   
@@ -65,7 +65,7 @@ const QuizTable =  ({ quizzes }: QuizBankProps) => {
               <Td>{quiz.maxMarks}</Td>
               <Td>{quiz.time} min</Td>
               <Td textAlign={"right"}>
-               <Button colorScheme="orange" onClick={() => handleTakeAQuizButtonClick(quiz.subject,quiz.time)}>Take Quiz</Button>
+               <Button colorScheme="orange" onClick={() => handleTakeAQuizButtonClick(quiz.subject)}>Take Quiz</Button>
               </Td>
             </Tr>
           ))}
