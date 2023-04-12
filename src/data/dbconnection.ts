@@ -372,30 +372,4 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
       return questions;
     }
   }
-  /**
-   * To retrive time of a certain quizz based on subject
-   * @param subject the subject of the quiz
-   * @returns quiz time
-   */
-  async findQuizTime(subject: string) {
-    const client = new MongoClient(this.uri);
-    var quizTime: number | null = null;
-    try {
-      await client.connect();
-  
-      const database = client.db("test");
-      const quizzes = database.collection("quizes");
-  
-      const query = { subject: subject };
-  
-      const result = await quizzes.findOne(query);
-      quizTime = result?.time ?? null;
-  
-    } catch (err) {
-      console.error(err);
-    } finally {
-      await client.close();
-      return quizTime;
-    }
-  }
 }

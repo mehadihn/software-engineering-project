@@ -23,7 +23,9 @@ export async function getServerSideProps(context) {
   try {
     var qd = new MongoQuizData();
     let questions = await qd.findQuestionListOfAQuiz(subjectValue);
-    const timeValue = await qd. findQuizTime(subjectValue);
+    const quiz = await qd.findQuiz(subjectValue);
+    const timeValue = quiz?.time;
+    console.log(timeValue);
     return {
       props: {
         questions: JSON.parse(JSON.stringify(questions)),
