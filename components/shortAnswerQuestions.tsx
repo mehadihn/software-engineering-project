@@ -35,11 +35,11 @@ export async function updateMarks(email: string, subject: string, marks: number)
         "Content-Type": "application/json",
       },
 
-      body: `{"marks": ${marks}, "subject": "${subject}"}`, 
+      body: `{"marks": ${marks}, "subject": "${subject}", "email": "${email}" }`, 
 
     };
 
-    let response = await fetch(`/api/quizes/quizMarks?id=${email}`, options)
+    let response = await fetch(`/api/quizes/quizMarks`, options)
       
   } catch (error) {
     console.log("An error occured while updating marks ", error);

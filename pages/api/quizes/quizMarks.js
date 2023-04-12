@@ -3,9 +3,7 @@ import MongoQuizData from "../../../src/data/dbconnection";
 export default async (req, res) => {
     try {
         var qd = new MongoQuizData();
-        var email = req.query.id
-        console.log(email)
-        const addMarks = await qd.addMarks(email , req.body.subject, req.body.marks)
+        const addMarks = await qd.addMarks(req.body.email , req.body.subject, req.body.marks)
         res.status(200).json(addMarks);
     } catch (e) {
         console.error(e);
