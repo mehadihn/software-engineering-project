@@ -128,7 +128,7 @@ export default function shortAnswerQuestions() {
   formValues.map(x => monkey(x))
 
   let per_question_mark = 0
-  per_question_mark = 100 / questions.length
+  per_question_mark = 6 / questions.length
   per_question_mark.toFixed(2);
   for (let j = 0; j < finalArray.length; j++){
     if(questions[j].answer == finalArray[j]){
@@ -138,7 +138,7 @@ export default function shortAnswerQuestions() {
 
     updateMarks("Mikel@Mikel.com" ,"Biology",  marks)
 
-    const myData = { subject: 'Biology',questionCount: 100 }
+    const myData = { subject: 'Biology',questionCount: questions.length }
     router.replace({
       pathname: '/student/quizResult',
       query: { data: JSON.stringify(myData) }

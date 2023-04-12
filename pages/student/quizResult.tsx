@@ -12,6 +12,9 @@ import Student from "../../src/business/models/Student";
 interface QuizBankProps {
   quiz: Quiz;
   student: Student;
+  subject: string;
+  questionCount: number;
+
 }
 
 let subject, questionCount = 0;
@@ -23,10 +26,9 @@ export async function getServerSideProps(req) {
     var qd = new MongoQuizData();
     subject = data.subject;
     questionCount = data.questionCount;
-
+    console.log(subject , questionCount)
     let quiz = await qd.findQuiz(subject);
     let student = await qd.findUser("Mikel@Mikel.com");
-
     return {
       props: {
         quiz: JSON.parse(JSON.stringify(quiz)),
@@ -48,15 +50,20 @@ export default function QuizResult(quiz: QuizBankProps) {
   let marks = 0;
   for (let j = 0; j < quiz.student.quizzes.length; j++){
     // console.log("Quiz Taken" + quiz.student.quizzes[j].subject)
-    console.log(subject)
-    if(quiz.student.quizzes[j].subject == subject){
+    
+    if(quiz.student.quizzes[j].subject == quiz.subject){
         marks = quiz.student.quizzes[j].marks;
     }
 
   }
 
+  console.log(quiz.quiz)
+  console.log(quiz.questionCount)
+
   let per_question_mark = 0
-  per_question_mark = quiz.quiz.marks / questionCount
+  per_question_mark = quiz.quiz.maxMarks / quiz.questionCount
+  console.log("marks:" , marks)
+  console.log("per_question_mark:" , per_question_mark)
   let correct_question = marks / per_question_mark
 
   return (
@@ -81,8 +88,8 @@ export default function QuizResult(quiz: QuizBankProps) {
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Your Final Score: {marks}</Text>
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Maximum Score: {quiz.quiz.maxMarks}</Text>
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Correct Questions: {correct_question}</Text>
-                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Total Questions: {questionCount}</Text>
-                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Time Taken: {quiz.quiz.time}</Text>
+                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Total Questions: {quiz.questionCount}</Text>
+                        <Text align={'center'} py={1} fontSie={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Time Taken: {quiz.quiz.time}</Text>
                     </Card>
                 </Container>
           </Box>
