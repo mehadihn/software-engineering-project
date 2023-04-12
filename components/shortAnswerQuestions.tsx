@@ -127,18 +127,28 @@ export default function shortAnswerQuestions() {
   }
   formValues.map(x => monkey(x))
 
+  let per_question_mark = 0
+  per_question_mark = 100 / questions.length
+  per_question_mark.toFixed(2);
   for (let j = 0; j < finalArray.length; j++){
     if(questions[j].answer == finalArray[j]){
-              marks = marks +1
+              marks = marks + per_question_mark
           }
         }
 
     updateMarks("Mikel@Mikel.com" ,"Biology",  marks)
-    console.log("Marks Updated Successfully");
-    router.replace( "/student/quizResult");
+
+    const myData = { subject: 'Biology',questionCount: 100 }
+    router.replace({
+      pathname: '/student/quizResult',
+      query: { data: JSON.stringify(myData) }
+    })
+
+    // console.log("Marks Updated Successfully");
+    // // router.replace( "/student/quizResult");
     // router.replace({
-    //   pathname: '/student/quizResult[req]',
-    //   query: { req: "Biology" },
+    //   pathname: '/student/quizResult',
+    //   query: { subject: "Biology" , questionCount: 100},
     // })
 
 
