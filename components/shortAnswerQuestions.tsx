@@ -24,7 +24,7 @@ import adminHome from "../pages/admin";
 import { useSession, getSession, signIn, signOut } from "next-auth/react";
 
 
-export async function updateMarks(postId: number, subject: string, marks: number) {
+export async function updateMarks(email: string, subject: string, marks: number) {
 
   try {
     const options: any = {
@@ -39,7 +39,7 @@ export async function updateMarks(postId: number, subject: string, marks: number
 
     };
 
-    let response = await fetch(`/api/quizes/quizMarks?id=${postId}`, options)
+    let response = await fetch(`/api/quizes/quizMarks?id=${email}`, options)
       
   } catch (error) {
     console.log("An error occured while updating marks ", error);
@@ -102,7 +102,6 @@ export default function shortAnswerQuestions() {
 
   const handleChange = (event, index) => {
     indexUpdate = currentPage * 3;
-    // console.log(index + indexUpdate);
     const { name, value } = event.target;
     const newFormValues = [...formValues];
     newFormValues[index+ indexUpdate] = { ...newFormValues[index + indexUpdate], [name]: value };
@@ -130,13 +129,11 @@ export default function shortAnswerQuestions() {
 
   for (let j = 0; j < finalArray.length; j++){
     if(questions[j].answer == finalArray[j]){
-              // console.log("Correct Answer")
               marks = marks +1
           }
         }
 
-    // console.log("Total marks" + marks)
-    updateMarks("Mikel@Mikel.com" as Number,"Biology",  marks)
+    updateMarks("Mikel@Mikel.com" ,"Biology",  marks)
     console.log("Marks Updated Successfully");
     router.replace( "/student/quizResult");
     // router.replace({

@@ -354,45 +354,6 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
     }
   }
 
-  async findUserById(id: string) {
-    const client = new MongoClient(this.uri);
-    var dummyUser = {
-      id: 0,
-      name: "NotFound",
-      lastname: "NotFound",
-      username: "NotFound",
-      email: "NotFound",
-      password: "NotFound",
-      role: "NotFound",
-      quizzes: [{ subject: "NotFound", marks: 100 }],
-    };
-    var user: Student  = dummyUser;
-    try {
-      await client.connect();
-
-      const database = client.db("test");
-      const users = database.collection<Student>("users");
-      const result = await users.findOne(
-        {
-          _id: new ObjectId(id),
-        }
-      ) ?? dummyUser;
-  
-      user = JSON.parse(JSON.stringify(result));
-
-    // Return the updated quiz object as JSON
-      return user;
-
-    } catch (err) {
-      console.error(err);
-      return false;
-    } finally {
-      await client.close();
-      return user;
-    }
-  }
-
-
   async checkQuesAns(subject: string , question: string , userAns: string) {
     
     const client = new MongoClient(this.uri);

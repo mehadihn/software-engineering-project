@@ -18,8 +18,7 @@ export async function getServerSideProps({req: String}) {
   try {
 
     var qd = new MongoQuizData();
-    let quiz = await qd.findQuiz("Math");
-    // let student = await qd.findUserById("6421f6d62f585fab90f5328f");
+    let quiz = await qd.findQuiz("Biology");
     let student = await qd.findUser("Mikel@Mikel.com");
 
     return {
@@ -48,7 +47,6 @@ export default function QuizResult(quiz: QuizBankProps) {
 
   }
 
-    let value='100'
   return (
     <>
       <Head>
