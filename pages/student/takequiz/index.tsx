@@ -25,7 +25,6 @@ export async function getServerSideProps(context) {
     let questions = await qd.findQuestionListOfAQuiz(subjectValue);
     const quiz = await qd.findQuiz(subjectValue);
     const timeValue = quiz?.time;
-    console.log(timeValue);
     return {
       props: {
         questions: JSON.parse(JSON.stringify(questions)),
