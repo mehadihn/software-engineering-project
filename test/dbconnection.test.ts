@@ -13,7 +13,6 @@ describe("MongoQuizData", () => {
   let uri;
   let client;
   let quizData;
-  let questionData;
 
   let sandbox = sinon.createSandbox();
 
@@ -59,14 +58,20 @@ describe("MongoQuizData", () => {
         { subject: "Math", marks: 80 },
       ],
     });
-    
-    await db.collection("questions").insertOne({
-      question: "What is the capital of Canada?",
-      answer: "Ottawa",
-      subject: "Geography",
-      type: "SingleAnswer",
-    });
-
+    await db.collection("questions").insertMany([
+      {
+        question: "What is the capital of Canada?",
+        answer: "Ottawa",
+        subject: "Geography",
+        type: "SingleAnswer",
+      },
+      {
+        question: "What is 10/2",
+        answer: "5",
+        subject: "IQ",
+        type: "SingleAnswer",
+      },
+    ]);
   });
 
   after(async () => {
@@ -256,20 +261,18 @@ describe("MongoQuizData", () => {
     });
 
   });
-
-  describe('findQuestionListOfAQuiz', () => {
-    it('should return an array of questions when given a valid subject', async () => {
-      const subject = 'Geography';
-      const result = await questionData.findQuestionListOfAQuiz(subject);
-      assert(Array.isArray(result));
-      assert(result.length > 0);
-    });
   
-    it('should return an empty array when given an invalid subject', async () => {
-      const subject = 'InvalidSubject';
-      const result = await questionData.findQuestionListOfAQuiz(subject);
-      assert(Array.isArray(result));
-      assert.strictEqual(result.length, 0);
+  describe("findQuestionListOfAQuiz", () => {
+    it("should return an array of questions for a given subject", async () => {
+      const questions = await quizData.findQuestionListOfAQuiz("IQ");
+      expect(questions).to.have.lengthOf(1);
+      expect(questions[0].subject).to.equal("IQ");
+    });
+
+    it("should return null if no questions found for a given subject", async () => {
+      const questions = await quizData.findQuestionListOfAQuiz("NotaSubject");
+      expect(questions).to.have.lengthOf(0);
     });
   });
+  
 });
