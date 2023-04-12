@@ -11,13 +11,13 @@ import Student from "../../src/business/models/Student";
 
 interface QuizBankProps {
   quiz: Quiz;
-  student: Student;
   subject: string;
   questionCount: number;
+  marks: number;
 
 }
 
-let subject, questionCount = 0;
+let subject, questionCount = 0 , marks = 0;;
 
 export async function getServerSideProps(req) {
   try {
@@ -26,15 +26,15 @@ export async function getServerSideProps(req) {
     var qd = new MongoQuizData();
     subject = data.subject;
     questionCount = data.questionCount;
-    console.log(subject , questionCount)
+    marks = data.marks;
+    console.log(subject , questionCount, marks)
     let quiz = await qd.findQuiz(subject);
-    let student = await qd.findUser("Mikel@Mikel.com");
     return {
       props: {
         quiz: JSON.parse(JSON.stringify(quiz)),
-        student:  JSON.parse(JSON.stringify(student)),
         subject: subject,
-        questionCount: questionCount
+        questionCount: questionCount,
+        marks: marks
 
       },
     };
@@ -47,24 +47,12 @@ export async function getServerSideProps(req) {
  * @returns the Quiz Result page for students build with the components Navigation Bar, Report Card, anf optionns to switch to various views and the footer. 
  */
 export default function QuizResult(quiz: QuizBankProps) {
-  let marks = 0;
-  for (let j = 0; j < quiz.student.quizzes.length; j++){
-    // console.log("Quiz Taken" + quiz.student.quizzes[j].subject)
-    
-    if(quiz.student.quizzes[j].subject == quiz.subject){
-        marks = quiz.student.quizzes[j].marks;
-    }
-
-  }
-
-  console.log(quiz.quiz)
-  console.log(quiz.questionCount)
 
   let per_question_mark = 0
   per_question_mark = quiz.quiz.maxMarks / quiz.questionCount
   console.log("marks:" , marks)
   console.log("per_question_mark:" , per_question_mark)
-  let correct_question = marks / per_question_mark
+  let correct_question = quiz.marks / per_question_mark
 
   return (
     <>
@@ -85,7 +73,7 @@ export default function QuizResult(quiz: QuizBankProps) {
                     borderRadius={'10px'} 
                     marginStart={16}
                     >
-                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Your Final Score: {marks}</Text>
+                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Your Final Score: {quiz.marks}</Text>
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Maximum Score: {quiz.quiz.maxMarks}</Text>
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Correct Questions: {correct_question}</Text>
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Total Questions: {quiz.questionCount}</Text>

@@ -138,7 +138,7 @@ export default function shortAnswerQuestions() {
 
     updateMarks("Mikel@Mikel.com" ,"Biology",  marks)
 
-    const myData = { subject: 'Biology',questionCount: questions.length }
+    const myData = { subject: 'Biology',questionCount: questions.length, marks: marks }
     router.replace({
       pathname: '/student/quizResult',
       query: { data: JSON.stringify(myData) }
