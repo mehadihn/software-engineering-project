@@ -34,8 +34,6 @@ const ITEMS_PER_PAGE = 3;
  * @returns returns a UI with short answer quizz containing quiz items(question and input for ander) and pagination for easy navigation
  */
 const ShortAnswerQuestions = ({questions,subjectValue,emailValue}:ShortAnswerQuestionsProps)=>{
-  console.log("subject = ",subjectValue);
-  console.log("email= ",emailValue);
   /**
    * Calculations for pagination
    */
