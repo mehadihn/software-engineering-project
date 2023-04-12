@@ -315,7 +315,7 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
     }
   }
 
-  async addMarks(id: string, subject: string, marks: number) {
+  async addMarks(email: string, subject: string, marks: number) {
     const client = new MongoClient(this.uri);
     var quiz: Quiz | null = null;
     try {
@@ -325,7 +325,8 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
       const users = database.collection("users");
       const result = await users.updateOne(
         {
-          _id: ObjectId(id),
+          // _id: new ObjectId(id),
+          email: email
         },
         {
           $push: {
@@ -349,7 +350,45 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
       return false;
     } finally {
       await client.close();
-      return true;
+      return quiz;
+    }
+  }
+
+  async findUserById(id: string) {
+    const client = new MongoClient(this.uri);
+    var dummyUser = {
+      id: 0,
+      name: "NotFound",
+      lastname: "NotFound",
+      username: "NotFound",
+      email: "NotFound",
+      password: "NotFound",
+      role: "NotFound",
+      quizzes: [{ subject: "NotFound", marks: 100 }],
+    };
+    var user: Student  = dummyUser;
+    try {
+      await client.connect();
+
+      const database = client.db("test");
+      const users = database.collection<Student>("users");
+      const result = await users.findOne(
+        {
+          _id: new ObjectId(id),
+        }
+      ) ?? dummyUser;
+  
+      user = JSON.parse(JSON.stringify(result));
+
+    // Return the updated quiz object as JSON
+      return user;
+
+    } catch (err) {
+      console.error(err);
+      return false;
+    } finally {
+      await client.close();
+      return user;
     }
   }
 

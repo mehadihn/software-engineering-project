@@ -13,6 +13,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
+import { useRouter } from "next/router";
+
 /**
  * to load css styles to the page since there are no default pagination in Chakra UI
  */
@@ -21,7 +23,9 @@ import Question from "../src/business/models/question";
 import adminHome from "../pages/admin";
 import { useSession, getSession, signIn, signOut } from "next-auth/react";
 
+
 export async function updateMarks(postId: number, subject: string, marks: number) {
+
   try {
     const options: any = {
       method: "POST",
@@ -36,10 +40,7 @@ export async function updateMarks(postId: number, subject: string, marks: number
     };
 
     let response = await fetch(`/api/quizes/quizMarks?id=${postId}`, options)
-      .then((response) => response.json())
-      .then((response) => console.log(response))
-      .catch((err) => console.error(err));
-
+      
   } catch (error) {
     console.log("An error occured while updating marks ", error);
   }
@@ -76,11 +77,13 @@ const ITEMS_PER_PAGE = 3;
  * Since the questions for a quizz coming from the questionbank, there id's are not serialized, so added auto incrementing question id using indec variable
  * @returns returns a UI with short answer quizz containing quiz items(question and input for ander) and pagination for easy navigation
  */
-const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:ShortAnswerQuestionsProps)=>{
-  /**
-   * Calculations for pagination
-   */
+export default function shortAnswerQuestions() {
   const [currentPage, setCurrentPage] = useState(0);
+  const router = useRouter();
+
+  /**
+   * Determining number of pages in total for pagination
+   */
 
   let indexUpdate  = 0; 
   const totalPages = Math.ceil(questions.length / ITEMS_PER_PAGE);
@@ -133,8 +136,14 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
         }
 
     // console.log("Total marks" + marks)
-    updateMarks("6421f6d62f585fab90f5328f" as Number,"Biology",  marks)
+    updateMarks("Mikel@Mikel.com" as Number,"Biology",  marks)
     console.log("Marks Updated Successfully");
+    router.replace( "/student/quizResult");
+    // router.replace({
+    //   pathname: '/student/quizResult[req]',
+    //   query: { req: "Biology" },
+    // })
+
 
   };
 

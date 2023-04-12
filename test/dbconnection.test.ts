@@ -275,4 +275,25 @@ describe("MongoQuizData", () => {
     });
   });
   
+  describe('addMarks', () => {
+    it('Sumrish - should successfully add marks to DB corresponding to the specific user', async () => {
+      const studentId = "john@example.com";
+      const subject = "Biology";
+      const marks = 90;
+      const marksAdded = await quizData.addMarks(studentId, subject,marks);
+      expect(marksAdded.acknowledged).to.deep.equal(true);
+   });
+  });
+
+  describe('fetchMarks', () => {
+    it('Sumrish - should return the added quiz marks corresponding to the specific user', async () => {
+      const user = await quizData.findUser("john@example.com");
+      expect(user.name).to.deep.equal("John");
+      expect(user.lastname).to.deep.equal("Doe");
+      expect(user.username).to.deep.equal("johndoe");
+      expect(user.role).to.deep.equal("student");
+      expect(user.quizzes[2].subject).to.deep.equal("Biology");
+      expect(user.quizzes[2].marks).to.deep.equal(90);
+   });
+  });
 });
