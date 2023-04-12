@@ -128,7 +128,7 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
         name: "DummyMathQuiz",
         subject: "Math",
         type: "DummyType",
-        marks: 0,
+        maxMarks: 0,
         time: 0,
       };
       var user: Student =

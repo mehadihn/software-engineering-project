@@ -15,6 +15,7 @@ interface TakeAQuizProps {
   subjectValue: string;
   timeValue: number;
   emailValue:string;
+  totalMarks:number;
 }
 
 export async function getServerSideProps(context) {
@@ -25,11 +26,13 @@ export async function getServerSideProps(context) {
     let questions = await qd.findQuestionListOfAQuiz(subjectValue);
     const quiz = await qd.findQuiz(subjectValue);
     const timeValue = quiz?.time;
+    const totalMarks = quiz?.maxMarks;
     return {
       props: {
         questions: JSON.parse(JSON.stringify(questions)),
         subjectValue,
-        timeValue: Number(timeValue)
+        timeValue: Number(timeValue),
+        totalMarks: Number(totalMarks),
       },
     };
   } 
@@ -45,7 +48,7 @@ export async function getServerSideProps(context) {
  * Function to return Take a Quiz UI for students
  * @returns Attempt a Quiz UI for students
  */
-export default function takeAQuiz({ questions,subjectValue,timeValue,emailValue}: TakeAQuizProps) {
+export default function takeAQuiz({ questions,subjectValue,timeValue,emailValue,totalMarks}: TakeAQuizProps) {
   /**
    * To set time to be reduced by 1 in every 60 seconds (60000 milliseconds)
    */
@@ -95,7 +98,7 @@ export default function takeAQuiz({ questions,subjectValue,timeValue,emailValue}
                 <chakra.h3 fontSize={'xl'} paddingTop={'1vh'}>{currentTime} min</chakra.h3>
               </Box>
               <Box flex="1" mx="auto" justifyContent="center" alignContent={"center"}>
-                <ShortAnswerQuestionList questions={questions} subjectValue={subjectValue} emailValue={userEmail(session)}/>
+                <ShortAnswerQuestionList questions={questions} subjectValue={subjectValue} emailValue={userEmail(session)} totalMarks={totalMarks}/>
               </Box>
               <Footer />
             </Box>
