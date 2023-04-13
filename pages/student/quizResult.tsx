@@ -81,7 +81,7 @@ export default function QuizResult(quiz: QuizBankProps) {
                     >
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Your Final Score: {Math.floor(quiz.marks)}</Text>
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Maximum Score: {quiz.quiz.maxMarks}</Text>
-                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Correct Questions: {Math.floor(correct_question)}</Text>
+                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Correct Questions: {Math.ceil(correct_question)}</Text>
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Total Questions: {quiz.questionCount}</Text>
                     </Card>
                 </Container>
