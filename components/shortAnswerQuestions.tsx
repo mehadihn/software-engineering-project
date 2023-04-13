@@ -57,15 +57,6 @@ interface ShortAnswerQuestionsProps {
   emailValue: string;
   totalMarks:number;
 }
-/**
- * defining the set of question sets
- */
-// let texts = ["What is your name before the marriage if you are married ?sumrish","What is your favorite color?black","What is your favorite food?biryani","What is your favorite animal?dog","What is your favorite book?novel","What is your favorite book when you were in high school and still willing to read?novel"]
-/**
- * Adding sample data to the quiz, this will be replaced by the database data
- * id will be auto incremented as the mapping loop index in order to provide a rerialized question id to the questions in the quizz
- */
-// const questions: Question[] = texts.map((text, index) => ({ id: index + 1, text: text.split('?')[0] , answer: text.split('?')[1]}));
 
 /**
  * define question items per page for pagination
@@ -91,7 +82,6 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
   let indexUpdate  = 0; 
   const totalPages = Math.ceil(questions.length / ITEMS_PER_PAGE);
   const handlePageClick = ({ selected }: { selected: number }) => {
-    console.log("Seclected" + selected);
     indexUpdate = ITEMS_PER_PAGE
     setCurrentPage(selected);
   
