@@ -77,7 +77,10 @@ const ITEMS_PER_PAGE = 3;
  * Since the questions for a quizz coming from the questionbank, there id's are not serialized, so added auto incrementing question id using indec variable
  * @returns returns a UI with short answer quizz containing quiz items(question and input for ander) and pagination for easy navigation
  */
-export default function shortAnswerQuestions() {
+const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:ShortAnswerQuestionsProps)=>{
+  /**
+   * Calculations for pagination
+   */  
   const [currentPage, setCurrentPage] = useState(0);
   const router = useRouter();
 
