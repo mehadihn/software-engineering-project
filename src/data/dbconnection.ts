@@ -6,6 +6,7 @@ import Student from "../business/models/Student";
 import IHandleQuizData from "../business/interfaces/IHandleQuizData";
 import IGetQuestionData from "../business/interfaces/IGetQuestionData";
 import IGetUserData from "../business/interfaces/IGetUserData";
+import { ObjectId } from "mongodb";
 
 import Questions from "../business/models/question";
 
@@ -120,7 +121,7 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
         email: "dummyemail",
         password: "dummypassword",
         role: "dummyrole",
-        quizzes: [{ subject: "Math", marks: 101 }],
+        quizzes: [{ subject: "Math", marks: 105 }],
       };
 
       var dummyQuiz = {
@@ -311,6 +312,44 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
     } finally {
       await client.close();
       return user;
+    }
+  }
+
+  async addMarks(email: string, subject: string, marks: number) {
+    const client = new MongoClient(this.uri);
+    var quiz: Quiz | null = null;
+    try {
+      await client.connect();
+
+      const database = client.db("test");
+      const users = database.collection("users");
+      const result = await users.updateOne(
+        {
+          email: email
+        },
+        {
+          $push: {
+            quizzes: 
+              {
+                subject: subject,
+                marks: marks,
+              }
+            
+        }
+      }
+      );
+  
+      quiz = JSON.parse(JSON.stringify(result));
+
+    // Return the updated quiz object as JSON
+      return quiz;
+
+    } catch (err) {
+      console.error(err);
+      return false;
+    } finally {
+      await client.close();
+      return quiz;
     }
   }
 
