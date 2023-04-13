@@ -325,7 +325,6 @@ export default class MongoQuizData implements IHandleQuizData, IGetQuestionData,
       const users = database.collection("users");
       const result = await users.updateOne(
         {
-          // _id: new ObjectId(id),
           email: email
         },
         {

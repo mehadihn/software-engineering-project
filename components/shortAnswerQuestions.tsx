@@ -117,7 +117,7 @@ export default function shortAnswerQuestions() {
     event.preventDefault();
 
     let finalArray = []
-    const monkey = (dict) => {
+    const inputArray = (dict) => {
       for (var key in dict) {
       if (dict.hasOwnProperty(key)) {
         console.log(dict[key]);
@@ -125,7 +125,7 @@ export default function shortAnswerQuestions() {
       }
       }
   }
-  formValues.map(x => monkey(x))
+  formValues.map(x => inputArray(x))
 
   let per_question_mark = 0
   per_question_mark = 6 / questions.length
@@ -143,15 +143,6 @@ export default function shortAnswerQuestions() {
       pathname: '/student/quizResult',
       query: { data: JSON.stringify(myData) }
     })
-
-    // console.log("Marks Updated Successfully");
-    // // router.replace( "/student/quizResult");
-    // router.replace({
-    //   pathname: '/student/quizResult',
-    //   query: { subject: "Biology" , questionCount: 100},
-    // })
-
-
   };
 
 
