@@ -60,12 +60,12 @@ interface ShortAnswerQuestionsProps {
 /**
  * defining the set of question sets
  */
-let texts = ["What is your name before the marriage if you are married ?sumrish","What is your favorite color?black","What is your favorite food?biryani","What is your favorite animal?dog","What is your favorite book?novel","What is your favorite book when you were in high school and still willing to read?novel"]
+// let texts = ["What is your name before the marriage if you are married ?sumrish","What is your favorite color?black","What is your favorite food?biryani","What is your favorite animal?dog","What is your favorite book?novel","What is your favorite book when you were in high school and still willing to read?novel"]
 /**
  * Adding sample data to the quiz, this will be replaced by the database data
  * id will be auto incremented as the mapping loop index in order to provide a rerialized question id to the questions in the quizz
  */
-const questions: Question[] = texts.map((text, index) => ({ id: index + 1, text: text.split('?')[0] , answer: text.split('?')[1]}));
+// const questions: Question[] = texts.map((text, index) => ({ id: index + 1, text: text.split('?')[0] , answer: text.split('?')[1]}));
 
 /**
  * define question items per page for pagination
@@ -92,7 +92,7 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
   const totalPages = Math.ceil(questions.length / ITEMS_PER_PAGE);
   const handlePageClick = ({ selected }: { selected: number }) => {
     console.log("Seclected" + selected);
-    indexUpdate = 3
+    indexUpdate = ITEMS_PER_PAGE
     setCurrentPage(selected);
   
   };
@@ -104,7 +104,7 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
   const { data: session, status } = useSession();
 
   const handleChange = (event, index) => {
-    indexUpdate = currentPage * 3;
+    indexUpdate = currentPage * ITEMS_PER_PAGE;
     const { name, value } = event.target;
     const newFormValues = [...formValues];
     newFormValues[index+ indexUpdate] = { ...newFormValues[index + indexUpdate], [name]: value };
@@ -131,17 +131,17 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
   formValues.map(x => inputArray(x))
 
   let per_question_mark = 0
-  per_question_mark = 6 / questions.length
+  per_question_mark = totalMarks / questions.length
   per_question_mark.toFixed(2);
   for (let j = 0; j < finalArray.length; j++){
-    if(questions[j].answer == finalArray[j]){
+    if(questions[j].answer.toLowerCase() == finalArray[j].toLowerCase()){
               marks = marks + per_question_mark
           }
         }
 
-    updateMarks("Mikel@Mikel.com" ,"Biology",  marks)
+    updateMarks(emailValue , subjectValue,  Math.floor(marks))
 
-    const myData = { subject: 'Biology',questionCount: questions.length, marks: marks }
+    const myData = { subject: subjectValue, questionCount: questions.length, marks:  Math.floor(marks) }
     router.replace({
       pathname: '/student/quizResult',
       query: { data: JSON.stringify(myData) }
@@ -174,7 +174,7 @@ const ShortAnswerQuestions = ({questions,subjectValue,emailValue,totalMarks}:Sho
                       backgroundColor={"white"} width="50%"
                       key={index}
                       name={`input${index}`} // use a unique name for each input
-                      value={q ? q[`input${index}`] : ""} // use the corresponding value from the state
+                      value={q ? q[`input${index}`] : " "} // use the corresponding value from the state
                       onChange={(event) => handleChange(event, index)}
                      />
                 </FormControl>

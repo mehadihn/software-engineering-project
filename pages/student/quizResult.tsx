@@ -7,7 +7,7 @@ import { Box, Container, Card, Text, Button, Stack} from "@chakra-ui/react";
 import MongoQuizData from "../../src/data/dbconnection";
 import Quiz from "../../src/business/models/Quiz";
 import Student from "../../src/business/models/Student";
-
+import { useRouter } from 'next/router'
 
 interface QuizBankProps {
   quiz: Quiz;
@@ -47,6 +47,12 @@ export async function getServerSideProps(req) {
  * @returns the Quiz Result page for students build with the components Navigation Bar, Report Card, anf optionns to switch to various views and the footer. 
  */
 export default function QuizResult(quiz: QuizBankProps) {
+  const router = useRouter();
+
+  const handleSubmit = async (e: any) => { 
+    router.push("/student") 
+  };
+
 
   let per_question_mark = 0
   per_question_mark = quiz.quiz.maxMarks / quiz.questionCount
@@ -69,22 +75,21 @@ export default function QuizResult(quiz: QuizBankProps) {
             <Result/>
             <Container maxWidth='64vw' minHeight="20vh">
                     <Card bgColor='#D9D9D9'
-                    maxWidth='100vw' minHeight="30vh"
+                    maxWidth='100vw' minHeight="25vh"
                     borderRadius={'10px'} 
                     marginStart={16}
                     >
-                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Your Final Score: {quiz.marks}</Text>
+                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Your Final Score: {Math.floor(quiz.marks)}</Text>
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Maximum Score: {quiz.quiz.maxMarks}</Text>
-                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Correct Questions: {correct_question}</Text>
+                        <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Correct Questions: {Math.floor(correct_question)}</Text>
                         <Text align={'center'} py={1} fontSize={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Total Questions: {quiz.questionCount}</Text>
-                        <Text align={'center'} py={1} fontSie={20} fontFamily={"Work Sans"} fontWeight={"bold"} color={"gray.800"}>Time Taken: {quiz.quiz.time}</Text>
                     </Card>
                 </Container>
           </Box>
           <Box flex="1"  mx="auto" justifyContent="center">
                  <Stack  spacing={20} mt={14}  direction='row'>
                             <Button colorScheme="orange" >Attempt Again </Button>
-                            <Button colorScheme="orange" >Main Menu </Button>
+                            <Button colorScheme="orange" onClick={ handleSubmit } >Main Menu </Button>
                             <Button colorScheme="orange" >Leaders Board </Button>
                         </Stack>
           </Box>
