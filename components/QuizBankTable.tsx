@@ -3,6 +3,7 @@ import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Table, Thead, Tbody, Tr, Th, Td, Button, Center, Flex, HStack, Box, cookieStorageManager } from "@chakra-ui/react";
 import Quiz from "../src/business/models/Quiz";
+import { useRouter } from 'next/router'
 /**
  * to load css styles to the page since there are no default pagination in Chakra UI
  */
@@ -28,6 +29,16 @@ const QuizTable =  ({ quizzes }: QuizBankProps) => {
   const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
+  /**
+   * redirecting to take a quiz page passing subkect as a parameter
+   */
+  const router = useRouter();
+  const handleTakeAQuizButtonClick = async(subject:string)=>{
+    router.push({
+      pathname: '../../student/takequiz',
+      query: { subject },
+    });
+  }
   
 
   return (
@@ -54,7 +65,7 @@ const QuizTable =  ({ quizzes }: QuizBankProps) => {
               <Td>{quiz.maxMarks}</Td>
               <Td>{quiz.time} min</Td>
               <Td textAlign={"right"}>
-                <Button colorScheme="orange">Take Quiz</Button>
+               <Button colorScheme="orange" onClick={() => handleTakeAQuizButtonClick(quiz.subject)}>Take Quiz</Button>
               </Td>
             </Tr>
           ))}

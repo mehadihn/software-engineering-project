@@ -58,14 +58,20 @@ describe("MongoQuizData", () => {
         { subject: "Math", marks: 80 },
       ],
     });
-    
-    await db.collection("questions").insertOne({
-      question: "What is the capital of Canada?",
-      answer: "Ottawa",
-      subject: "Geography",
-      type: "SingleAnswer",
-    });
-
+    await db.collection("questions").insertMany([
+      {
+        question: "What is the capital of Canada?",
+        answer: "Ottawa",
+        subject: "Geography",
+        type: "SingleAnswer",
+      },
+      {
+        question: "What is 10/2",
+        answer: "5",
+        subject: "IQ",
+        type: "SingleAnswer",
+      },
+    ]);
   });
 
   after(async () => {
@@ -255,5 +261,18 @@ describe("MongoQuizData", () => {
     });
 
   });
+  
+  describe("findQuestionListOfAQuiz", () => {
+    it("should return an array of questions for a given subject", async () => {
+      const questions = await quizData.findQuestionListOfAQuiz("IQ");
+      expect(questions).to.have.lengthOf(1);
+      expect(questions[0].subject).to.equal("IQ");
+    });
 
+    it("should return null if no questions found for a given subject", async () => {
+      const questions = await quizData.findQuestionListOfAQuiz("NotaSubject");
+      expect(questions).to.have.lengthOf(0);
+    });
+  });
+  
 });
