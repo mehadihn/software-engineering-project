@@ -23,6 +23,15 @@ import Question from "../src/business/models/question";
 import adminHome from "../pages/admin";
 import { useSession, getSession, signIn, signOut } from "next-auth/react";
 
+/**
+  Function to update the marks in the database.
+  @async
+  @function
+  @param {string} email - The email of the user taking the quiz.
+  @param {string} subject - The subject of the quiz.
+  @param {number} marks - The marks scored by the user.
+  @returns {Promise<void>} Nothing.
+*/
 
 export async function updateMarks(email: string, subject: string, marks: number) {
 
@@ -103,14 +112,15 @@ const ShortAnswerQuestions = ({ questions, subjectValue, emailValue, totalMarks 
 
   let marks = 0
 
-
+  /**
+  Function that handles form submission.
+  @param {Object} event - The event object for the form submission.
+  */
   const handleSubmit = (event) => {
-
-
     event.preventDefault();
     let finalArray = []
     let indexArray = []
-    const inputArray = (dict) => {
+    const ansGivenByUser = (dict) => {
 
       for (var key in dict) {
         if (dict.hasOwnProperty(key)) {
@@ -120,7 +130,7 @@ const ShortAnswerQuestions = ({ questions, subjectValue, emailValue, totalMarks 
       }
     }
 
-    formValues.map(x => inputArray(x))
+    formValues.map(x => ansGivenByUser(x))
     let per_question_mark = 0
     per_question_mark = totalMarks / questions.length
     per_question_mark.toFixed(2);
