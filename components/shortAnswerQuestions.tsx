@@ -119,12 +119,12 @@ const ShortAnswerQuestions = ({ questions, subjectValue, emailValue, totalMarks 
   const handleSubmit = (event) => {
     event.preventDefault();
     let finalArray = []
-    let indexArray = []
+    let ansGivenByUserIndexes = []
     const ansGivenByUser = (dict) => {
 
       for (var key in dict) {
         if (dict.hasOwnProperty(key)) {
-          indexArray.push(parseInt(key.match(/\d+/)[0]) - 1);
+          ansGivenByUserIndexes.push(parseInt(key.match(/\d+/)[0]) - 1);
           finalArray.push(dict[key]);
         }
       }
@@ -136,7 +136,7 @@ const ShortAnswerQuestions = ({ questions, subjectValue, emailValue, totalMarks 
     per_question_mark.toFixed(2);
 
     for (let j = 0; j < finalArray.length; j++) {
-      if (questions[indexArray[j]].answer.toLowerCase() == finalArray[j].toLowerCase()) {
+      if (questions[ansGivenByUserIndexes[j]].answer.toLowerCase() == finalArray[j].toLowerCase()) {
         marks = marks + per_question_mark
       }
     }
